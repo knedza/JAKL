@@ -1,10 +1,16 @@
+## MAPS project 
+## May 2019
+## JAKL team, University of Plymouth
+## CC - BY 3.0
+
 library(tidyverse)
 
-
+# get data from our repository
 full <- read.csv("https://raw.githubusercontent.com/knedza/JAKL/master/maps-synthetic-data-v1.1.csv")
 
 variable.names(full)
 
+# keep the variables we identified as useful
 interesting <- full %>% select(
   'sex',
   'comp_bed_9',
@@ -55,4 +61,12 @@ interesting <- full %>% select(
   'text_week'
 )
 
-write.csv(interesting, 'jakl.csv')
+attach(interesting)
+
+# what is the granularity of our main DVs 
+table(comp_week,comp_wend)
+
+
+# at the end, save the interesting data locally so it can be uploaded
+# write.csv(interesting, 'jakl.csv')
+
