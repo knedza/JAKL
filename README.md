@@ -44,7 +44,7 @@ Primary diagnosis was determined using the CIS-R.
 
 |  0  |  1  |  2  |  4  |  5  |  6  |  7  |  8  |  9 |  10 |  11 |  12 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| none | mild neurosis | mild GAD | 3 = OCD |  4 = mixed anxiety and depression |  5 = specific phobia | 6 = social phobia | 7 = agoraphobia | 8 = GAD | 9 = panic disorder | 10 = mild depression | 11 = moderate depression | 12 = severe depression |
+| 0 = none | 1 = mild neurosis | 2 = mild GAD | 3 = OCD |  4 = mixed anxiety and depression |  5 = specific phobia | 6 = social phobia | 7 = agoraphobia | 8 = GAD | 9 = panic disorder | 10 = mild depression | 11 = moderate depression | 12 = severe depression |
 | 3573 | 240 |  99 |  11 | 101  | 66  |  6  | 22  |  6 | 134 | 181  | 74 |
 
 *secd_diag	FJCI601*	Child's secondary diagnosis in accordance with ICD-10.	Discrete	Clinic	around 17.5 years	
@@ -52,7 +52,7 @@ Secondary diagnosis was determined using the CIS-R.
 
 | 0 = none | 1 = mild neurosis | 2 = mild GAD | 3 = OCD | 4 = mixed anxiety and depression | 5 = specific phobia | 6 = social phobia | 7 = agoraphobia | 8 = GAD | 9 = panic disorder | 10 = mild depression | 11 = moderate depression | 12 = severe depression |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-|   0 |  1   | 2  |  |  4  |  5  |  6  |  7  |  8  |  9  | | | |
+|   0 |  1   | 2  | 3 |  4  |  5  |  6  |  7  |  8  |  9  | 10 | 11 | 12 |
 | 3980 | 246  | 43  | 0 | 62  | 44  | 19  |  3 |  94  | 22 | | | |
 
 We would be looking at values of 4, 10, 11 or 12; there is an order 10-11-12 but 4 is separate
