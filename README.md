@@ -8,10 +8,14 @@ The closest timepoint to this in the data is at 17.5 years, where five assessmen
 
 *dep_score	FJCI350*	Child's depression score on CIS-R.	Ordinal	Clinic	around 17.5 years	
 -Higher scores indicate higher levels of depressive symptomatology.  
--+1 if less/no enjoyment with life during the past week, 
--+1 if depressed for >3day in past week, 
--+1 if depressed for >3hr in any day of past week, 
--+1 if unable to be cheered up. See CIS-R Descriptive Summary for details.
+
+- +1 if less/no enjoyment with life during the past week, 
+
+- +1 if depressed for >3day in past week,
+
+- +1 if depressed for >3hr in any day of past week, 
+
+- +1 if unable to be cheered up. See CIS-R Descriptive Summary for details.
     
 |     0  |  1  |  2  |  3  |  4 |
 | 3463 |  488 | 299 | 163 | 100 |
