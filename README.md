@@ -17,14 +17,10 @@ The closest timepoint to this in the data is at 17.5 years, where five assessmen
 
 - +1 if unable to be cheered up. See CIS-R Descriptive Summary for details.
 
-|---|---|---|---|---|    
-|     0  |  1  |  2  |  3  |  4 |
-|  |   | 299 | 163 | 100 |
 
-
-| 0  | 1 |
-| ------------- | ------------- |
-| 3463  | 488  |
+| 0  | 1 | 2 | 3 | 4 |
+| ------------- | ------------- | --- | --- | --- |
+| 3463  | 488  | 299 | 163 | 100 |
 
 *dep_thoughts	FJCI363* Child's number of depressive thoughts on CIS-R.	Ordinal	Clinic	around 17.5 years	
 Higher scores indicate higher levels of depressive thoughts. 
