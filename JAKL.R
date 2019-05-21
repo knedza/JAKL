@@ -63,9 +63,16 @@ interesting <- full %>% select(
 
 attach(interesting)
 
-# what is the granularity of our main DVs 
+# what is the granularity of our main vars
 table(comp_week,comp_wend)
+table(comp_week)
+table(comp_wend)
 
+table(dep_score)
+table(dep_thoughts)
+table(has_dep_diag)
+table(prim_diag)
+table(secd_diag)
 
 # at the end, save the interesting data locally so it can be uploaded
 # write.csv(interesting, 'jakl.csv')
