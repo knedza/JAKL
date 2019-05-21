@@ -77,3 +77,25 @@ table(secd_diag)
 # at the end, save the interesting data locally so it can be uploaded
 # write.csv(interesting, 'jakl.csv')
 
+# make a variable combining primary and secondary diagnosis if any of 4, 10, 11 or 12 mentioned on either
+# 
+
+interesting$anydepdiag <- 0
+
+interesting$anydepdiag[interesting$prim_diag==4 |
+                         interesting$prim_diag==10 |
+                         interesting$prim_diag==11 |
+                         interesting$prim_diag==12 ]  <- 1
+
+interesting$anydepdiag[interesting$secd_diag==4 |
+                         interesting$secd_diag==10 |
+                         interesting$secd_diag==11 |
+                         interesting$secd_diag==12 ]  <- 1
+
+
+
+# This finds 419 people, only 389 of whom have 'Yes' for has_dep_diag
+
+table(interesting$has_dep_diag, interesting$anydepdiag)
+
+
