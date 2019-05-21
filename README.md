@@ -19,13 +19,12 @@ The closest timepoint to this in the data is at 17.5 years, where five assessmen
 
 |---|---|---|---|---|    
 |     0  |  1  |  2  |  3  |  4 |
-| 3463 |  488 | 299 | 163 | 100 |
+|  |   | 299 | 163 | 100 |
 
 
-| First Header  | Second Header |
+| 0  | 1 |
 | ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
+| 3463  | 488  |
 
 *dep_thoughts	FJCI363* Child's number of depressive thoughts on CIS-R.	Ordinal	Clinic	around 17.5 years	
 Higher scores indicate higher levels of depressive thoughts. 
