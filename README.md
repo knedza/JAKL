@@ -21,6 +21,12 @@ The closest timepoint to this in the data is at 17.5 years, where five assessmen
 |     0  |  1  |  2  |  3  |  4 |
 | 3463 |  488 | 299 | 163 | 100 |
 
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
 *dep_thoughts	FJCI363* Child's number of depressive thoughts on CIS-R.	Ordinal	Clinic	around 17.5 years	
 Higher scores indicate higher levels of depressive thoughts. 
 -   +1 if feelings of needless guilt, 
