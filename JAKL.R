@@ -74,8 +74,10 @@ table(has_dep_diag)
 table(prim_diag)
 table(secd_diag)
 
+
 # at the end, save the interesting data locally so it can be uploaded
 # write.csv(interesting, 'jakl.csv')
+# 
 
 # make a variable combining primary and secondary diagnosis if any of 4, 10, 11 or 12 mentioned on either
 # 
@@ -97,5 +99,41 @@ interesting$anydepdiag[interesting$secd_diag==4 |
 # This finds 419 people, only 389 of whom have 'Yes' for has_dep_diag
 
 table(interesting$has_dep_diag, interesting$anydepdiag)
+
+
+
+
+# Logistic regression to predict anydepdiag from computer use on weekdays and at weekends
+# follows examples at https://stats.idre.ucla.edu/r/dae/logit-regression/
+# uses package aod
+
+library(aod)
+
+logit.model <- glm(data=interesting, anydepdiag ~ comp_week + comp_wend, family="binomial")
+summary(logit.model)
+confint(logit.model)  # confidence intervals on co-efficients estimates based on the profiled log-likelihood function
+
+# test overall effect of weekday use
+wald.test(b = coef(logit.model), Sigma = vcov(logit.model), Terms = 2:4)
+# test overall effect of weekend use
+wald.test(b = coef(logit.model), Sigma = vcov(logit.model), Terms = 5:7)
+# contrast low use with high use
+lohi <- cbind(0, -2, 1, 1,  -2, 1, 1)
+wald.test(b = coef(logit.model), Sigma = vcov(logit.model), L = lohi)
+# odds ratios and 95%CI
+exp(cbind(OR = coef(logit.model), confint(logit.model)))
+# predict probabilities
+# build dataframe of every combined level of the two use factors
+newdata <- data.frame(expand.grid(comp_week=factor(levels(interesting$comp_week)), 
+                                  comp_wend=factor(levels(interesting$comp_wend)) ))
+# add in the Prediction
+newdata$pred <- predict(logit.model, newdata = newdata, type="response")
+# could add plots here 
+# 
+# measures of model fit
+dev.diff <- with(logit.model, null.deviance - deviance) # difference in deviances
+df.diff <- with(logit.model, df.null - df.residual) # difference in df
+model.p <- with(logit.model, pchisq(dev.diff, df.diff, lower.tail=FALSE))
+paste("Difference",dev.diff,", df=",df.diff,"p=",model.p)
 
 
