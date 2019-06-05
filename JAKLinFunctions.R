@@ -1,5 +1,5 @@
 TEAM_NAME="jakl"
-VERSION="R version 3.4.1 (2017-06-30)"
+VERSION="R version 3.6.0 (2019-04-26)"
 
 load_data <- function(path){
   # Loads the data using base R.
@@ -83,52 +83,11 @@ specify_model <- function(data){
   summary(model)
   confint(model)  # confidence intervals on co-efficients estimates based on the profiled log-likelihood function
   
-  # test overall effect of weekday use
-  wald.test(b = coef(model), Sigma = vcov(model), Terms = 2:4)
-  # test overall effect of weekend use
-  wald.test(b = coef(model), Sigma = vcov(model), Terms = 5:7)
-  # contrast low use with high use
-  lohi <- cbind(0, -1, -1, 2,  -1, -1, 2)
-  wald.test(b = coef(model), Sigma = vcov(model), L = lohi)
-  # odds ratios and 95%CI
-  exp(cbind(OR = coef(model), confint(model)))
-  # predict probabilities
-  # build dataframe of every combined level of the two use factors
-  newdata <- data.frame(expand.grid(comp_week=factor(levels(data$comp_week)), 
-                                    comp_wend=factor(levels(data$comp_wend)) ))
-  # add in the Prediction
-  newdata$pred <- predict(model, newdata = newdata, type="response")
-  # could add plots here 
-  # 
-  data$comp_week <- factor(data$comp_week,levels(data$comp_week)[c(4,3,1,2)])
-  data$comp_wend <- factor(data$comp_wend,levels(data$comp_wend)[c(4,3,1,2)])
-  
-  # 
-  newdata %>% ggplot(aes(x=comp_week,
-                         y=comp_wend,
-                         size=pred))+
-    geom_point()+
-    labs(y='Daily computer use at weekends',
-         x='Daily computer use on weekdays')
-  # 
-  #  
-  
-  # 
-  # measures of model fit
-  dev.diff <- with(model, null.deviance - deviance) # difference in deviances
-  df.diff <- with(model, df.null - df.residual) # difference in df
-  model.p <- with(model, pchisq(dev.diff, df.diff, lower.tail=FALSE))
-  (paste("Difference",dev.diff,", df=",df.diff,"p=",model.p))
-  
-  
-  ### example below
-   
-  # logistic regression model
-  # model <- glm("depression ~ comp_use + iq + weight_16 + height_16", family=binomial, data=data)
+
   
   # log odds ratio s.e. and lower/upper bounds for CI
-  lor <- model$coefficients[2]
-  lse <- summary(model)$coefficients[2,2]
+  lor <- model$coefficients[2:7]
+  lse <- summary(model)$coefficients[2:7,2]
   llb <- lor - 2*lse
   lub <-  lor + 2*lse
   
@@ -140,15 +99,29 @@ specify_model <- function(data){
   # Note: DIC not necessary (not Bayes/Hierarchical model)
   #       data must be returned as part of a list because R can't return multiple objects
   results <- list('aic' = model$aic, 
-                  'or_1' = exp(model$coefficients[2]), 
-                  'p_1' = summary(model)$coefficients[2,4], 
+                  'or_1' = exp(model$coefficients[2:7]), 
+                  'p_1' = summary(model)$coefficients[2:7,4], 
                   'ci_1' = ci, 
                   'mod' = model, 
                   'data' = data)
   results
 }
 
-
+output <- function(results){
+ # make some visible output so we can see what the model has done
+   
+  # IMPORTS
+  library(tidyverse)
+  library(pander)
+  
+  # send reportables to console
+  message(paste("AIC=",results$aic))
+  message(results$or_1  %>% pandoc.table(caption="Odds Ratios"))
+  message(results$p_1  %>% pandoc.table(caption="Probabilities"))
+  message(results$ci_1 %>% pandoc.table(caption="Confidence Intervals"))
+  
+  
+}
 
 
 
@@ -161,5 +134,7 @@ data <- computer_use_001(data)
 data <- depression_001(data)
 data <- transformation_001(data)
 results <- specify_model(data)
+output(results)
 
 
+ 
