@@ -1,0 +1,197 @@
+---
+title: "MAPS submission"
+output: html_document
+---
+
+team: JAKL   
+date of last edit: 16/06/2019   
+version: R 3.6.0 (09-06-2019)   
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+All of my personal comments are in *italics* (Karol)
+
+
+## First draft of MAPS submission file by JAKL
+
+*echo=TRUE is used to present the code and the results when knitted (printed into a file)*  
+
+
+**Loading packages**
+*is this still needed?*
+```{r message=FALSE}
+library(tidyverse)
+library(aod)
+```
+
+
+**Step 1.** Loading the data from the file
+```{r echo=TRUE}
+load_data <- function(path){
+  # Loads the data using base R.
+  # 
+  data <- read.csv(path, stringsAsFactors = T)
+  data
+}
+```
+
+
+
+
+**Step 2.** Combining the variables together
+
+Computer use 
+```{r echo=TRUE}
+computer_use_001 <- function(data){
+  # Computer use is defined using 'comp_week' and 'comp_wend'
+  
+  # IMPORTS
+  
+  
+  # DEFINE COMPUTER USE
+  # Assign average numeric values for each of the categories
+  # reorder the levels of comp_week and comp_wend
+  
+  data$comp_week <- factor(data$comp_week,levels(data$comp_week)[c(4,3,1,2)])
+  data$comp_wend <- factor(data$comp_wend,levels(data$comp_wend)[c(4,3,1,2)])
+  
+  # keep these names for plotting later
+  #iv.levels <- levels(data$comp_week)
+  
+  
+  data
+}
+```
+
+
+
+Depression diagnosis (creating a variable combining primary and secondary diagnosis if any of 4, 10, 11 or 12 scoring on either of primary or secondary)
+```{r echo=TRUE}
+depression_001 <- function(data){
+  # This function defines depression using 'prim_diag' and
+  # 'secd_diag', values 10-12 and also 4 'mixed anxiety and depression'
+  
+  #IMPORTS:
+  
+  #PARAMETERS:
+  
+  #DEFINE DEPRESSION:
+  data$anydepdiag <- 0
+  
+  data$anydepdiag[data$prim_diag==4 |
+                           data$prim_diag==10 |
+                           data$prim_diag==11 |
+                           data$prim_diag==12 ]  <- 1
+  
+  data$anydepdiag[data$secd_diag==4 |
+                           data$secd_diag==10 |
+                           data$secd_diag==11 |
+                           data$secd_diag==12 ]  <- 1
+ 
+  data 
+}
+```
+
+
+
+**Step 3.** Choosing variables for the analysis 
+```{r echo=TRUE}
+transformation_001 <- function(data){
+  # This selects some variables to use in final model
+  # IMPORTS
+ 
+  # PARAMETERS
+  VARIABLES_TO_USE <- c('anydepdiag', 'comp_week', 'comp_wend')
+  
+  # select data
+  data <- select(data, VARIABLES_TO_USE)
+  data
+}
+```
+
+
+
+**Step 4.** Appying the logistic regression model (main analysis)
+``` {r echo=TRUE}
+specify_model <- function(data){
+ 
+  # Logistic regression to predict anydepdiag from computer use on weekdays and at weekends
+  # follows examples at https://stats.idre.ucla.edu/r/dae/logit-regression/
+  # uses package aod
+
+  # IMPORTS
+  library(aod)
+  library(tidyverse)
+  
+  
+  # logistic regression model
+  
+  model <- glm(data=data, anydepdiag ~ comp_week + comp_wend, family="binomial")
+  summary(model)
+  confint(model)  # confidence intervals on co-efficients estimates based on the profiled log-likelihood function
+  
+
+  
+  # log odds ratio s.e. and lower/upper bounds for CI
+  lor <- model$coefficients[2:7]
+  lse <- summary(model)$coefficients[2:7,2]
+  llb <- lor - 2*lse
+  lub <-  lor + 2*lse
+  
+  # exponentiate
+  or <- exp(lor)
+  ci <- exp(c(llb, lub))
+  
+  # the results 
+  # Note: DIC not necessary (not Bayes/Hierarchical model)
+  #       data must be returned as part of a list because R can't return multiple objects
+  results <- list('aic' = model$aic, 
+                  'or_1' = exp(model$coefficients[2:7]), 
+                  'p_1' = summary(model)$coefficients[2:7,4], 
+                  'ci_1' = ci, 
+                  'mod' = model, 
+                  'data' = data)
+  results
+}
+
+```
+
+
+
+**Step 5.** Way of presenting the results in a clear output
+``` {r echo=TRUE}
+output <- function(results){
+ # make some visible output so we can see what the model has done
+   
+  # IMPORTS
+  library(tidyverse)
+  library(pander)
+  
+  # send reportables to console
+  message(paste("AIC=",results$aic))
+  message(results$or_1  %>% pandoc.table(caption="Odds Ratios"))
+  message(results$p_1  %>% pandoc.table(caption="Probabilities"))
+  message(results$ci_1 %>% pandoc.table(caption="Confidence Intervals"))
+  
+  
+}
+```
+
+
+
+*Should this be at the end or at the beginning?* 
+``` {r}
+#do we need this as an output?
+
+#### lines to run functions
+data <- load_data(path = 'https://raw.githubusercontent.com/knedza/JAKL/master/maps-synthetic-data-v1.1.csv')
+data <- computer_use_001(data)
+data <- depression_001(data)
+data <- transformation_001(data)
+results <- specify_model(data)
+output(results)
+
+```
+
