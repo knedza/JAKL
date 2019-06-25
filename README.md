@@ -55,7 +55,22 @@ Secondary diagnosis was determined using the CIS-R.
 
 We would be looking at values of 4, 10, 11 or 12; there is an order 10-11-12 but 4 is separate
 
-Could combine primary and secondary - if 4, 10, 11, 12 in either or both then YES else NO
+## transform collected data into DV
+We combine primary and secondary - if 4, 10, 11, 12 in either or both then YES else NO. This creates our dichotomous dependent variable *anydepdiag*
+
+''''r
+data$anydepdiag <- 0
+  
+  data$anydepdiag[data$prim_diag==4 |
+                           data$prim_diag==10 |
+                           data$prim_diag==11 |
+                           data$prim_diag==12 ]  <- 1
+  
+  data$anydepdiag[data$secd_diag==4 |
+                           data$secd_diag==10 |
+                           data$secd_diag==11 |
+                           data$secd_diag==12 ]  <- 1
+ ''''
 
 
 ## Identify main IVs
@@ -79,6 +94,23 @@ Not at all, < 1 hour, 1-2 hours, 3 or more hours
 | --- | --- | --- | --- |
 |           158   |             927   |          1950 |            1804  |            
 
-## Primary Hypothesis in terms of variables
-Are we looking at weekdays and weekeneds independently, or together?
+## Analysis
+We looking at weekdays and weekends independently.
+
+Conduct a Logistic regression to predict *anydepdiag* from *comp_week* and *comp_wend* 
+
+''''r
+ library(aod)
+ 
+ model <- glm(data=data, anydepdiag ~ comp_week + comp_wend, family="binomial")
+''''
+
+This shows that computer use of more than an hour a day during the week reduced the risk of depression. Computer use at weekends of more than an hour a day increases the risk, insignificantly.
+
+There may be an artefact with depressed people over or underestimating time spent angaging in activities.
+
+We check this by repeating the analysis with some additional IVs collected alongsidet he self reported computer use:
+
+
+
 
