@@ -109,8 +109,10 @@ This shows that computer use of more than an hour a day during the week reduced 
 
 There may be an artefact with depressed people over or underestimating time spent angaging in activities.
 
-We check this by repeating the analysis with some additional IVs collected alongsidet he self reported computer use:
+We checked this by repeating the analysis with some additional IVs collected alongsidet he self reported computer use:
+_How much time the child spends alone, how much time they spend outside, time they spend socialising with other young people, and time they spend on their mobile (talk/text)_
 
+None of these additional variables had a significant effect uopn the likelihood of a diagnosis of depression at age 18.
 
 
 
